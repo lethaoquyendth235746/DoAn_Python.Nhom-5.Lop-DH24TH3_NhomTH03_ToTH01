@@ -3,6 +3,15 @@ from tkinter import ttk,messagebox
 from tkcalendar import DateEntry
 import mysql.connector
 import datetime
+
+
+
+# Import file đăng nhập
+import giaodiendangnhap
+
+
+
+
 # Kết nối đến cơ sở dữ liệu MySQL
 def connect_db():
     try:
@@ -313,6 +322,18 @@ tree.column("cccd", width=80, anchor="center")
 
 tree.pack(pady=5, padx=10, fill="both")
 
+
+
+
+
+
+# ====== KHỐI CHẠY CHƯƠNG TRÌNH ======
+root.withdraw() # Ẩn cửa sổ chính Quản lý Bệnh nhân
+
+load_data() # Vẫn load data để khi đăng nhập xong, bảng đã sẵn sàng
+
+# Gọi cửa sổ đăng nhập từ file login, truyền các hàm và biến cần thiết
+giaodiendangnhap.show_login_window(root, connect_db, center_window, COLOR_DARK_RED_FG)
 
 
 
