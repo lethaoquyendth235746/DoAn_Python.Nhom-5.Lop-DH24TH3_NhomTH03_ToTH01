@@ -13,6 +13,9 @@ from quanlikhoa import QuanLyKhoa
 from quanliphong import QuanLyPhong  
 from quanlidichvu import QuanLyDichVu  
 from nhapvien import QuanLyNhapVien 
+from quanlithanhtoan import QuanLyThanhToan
+from thongke import ThongKeHoaDon
+
 
 
 
@@ -51,16 +54,25 @@ def thoat():
     if messagebox.askyesno("Xác nhận", "Bạn có chắc muốn thoát không?"):
         root.destroy()
 
+
 def gioithieu():
-    messagebox.showinfo("Giới thiệu", 
-                        "PHẦN MỀM QUẢN LÝ BỆNH VIỆN\n"
-                        "Nhóm 5 - Lớp DH24TH3 - Tổ TH01\n"
-                        "Trường Đại học An Giang")
+    messagebox.showinfo(
+        "Giới thiệu phần mềm",
+        "🏥 PHẦN MỀM QUẢN LÝ BỆNH NHÂN 🏥\n\n"
+        "Nhóm thực hiện: Nhóm 5 - Lớp DH24TH3 - Tổ TH01\n"
+        "Trường: Đại học An Giang\n\n"
+        "Mục tiêu:\n"
+        "- Hỗ trợ quản lý bệnh nhân, bác sĩ, khoa, phòng, dịch vụ\n"
+        "- Quản lý hóa đơn và thanh toán tiện lợi\n"
+        "- Thống kê nhanh các dịch vụ và doanh thu\n\n"
+        "Chúc các bạn sử dụng phần mềm hiệu quả!"
+    )
 
 def open_bacsi_form():
     root.withdraw()
     child = tk.Toplevel()
     child.title("Quản lý bác sĩ")
+    child.geometry("1100x650")  
     app = QuanLyBacSi(child, connect_db, root)  # truyền root vào
     app.pack(fill="both", expand=True)
 
@@ -72,7 +84,8 @@ def open_bacsi_form():
 # trong file giao diện chính
 def open_khoa_form():
     root.withdraw()             # ẩn form chính
-    child = tk.Toplevel()       # tạo cửa sổ con
+    child = tk.Toplevel()
+    child.geometry("1100x650")         # tạo cửa sổ con
     app = QuanLyKhoa(child, connect_db, root)
     app.pack(fill="both", expand=True)
 
@@ -84,6 +97,7 @@ def open_phong_form():
     """Ẩn form chính và mở form Quản lý phòng"""
     root.withdraw()  # ẩn form chính
     child = tk.Toplevel()
+    child.geometry("1100x650")  
     child.title("Quản lý phòng")
     app = QuanLyPhong(child, connect_db)  # truyền connect_db
     app.pack(fill="both", expand=True)
@@ -120,6 +134,23 @@ def open_nhapvien_form():
 
     child.protocol("WM_DELETE_WINDOW", on_close)
 
+def open_thanhtoan_form():
+    root.withdraw()  # ẩn form chính
+    child = tk.Toplevel()
+    child.title("Quản lý Thanh toán")
+    child.geometry("1100x650")
+
+    app = QuanLyThanhToan(child, connect_db, parent_root=root)  # truyền root vào
+    app.pack(fill="both", expand=True)
+
+
+
+
+def open_thongke_form():
+    root.withdraw()  # ẩn form chính
+    ThongKeHoaDon(root, connect_db)
+
+
 root = tk.Tk()
 root.title("QUẢN LÝ BỆNH NHÂN")
 root.geometry("1100x650")
@@ -131,6 +162,13 @@ root.config(menu=menubar)
 COLOR_DARK_RED_FG = "#E21C1C"
 
 # Tạo menu "Hệ thống"
+
+# Hàm thoát chương trình
+def thoat_chuongtrinh():
+    if messagebox.askyesno("Xác nhận", "Bạn có chắc muốn thoát chương trình không?"):
+        root.destroy()  # đóng toàn bộ ứng dụng
+
+# Thêm button Thoát vào menu
 
 
 # ======== ẢNH NỀN ========
@@ -160,13 +198,22 @@ tk.Button(menu_frame, text="👨‍⚕️  Bác sĩ",command=open_bacsi_form, **
 tk.Button(menu_frame, text="🏥  Khoa",command=open_khoa_form, **style).pack(pady=5)
 tk.Button(menu_frame, text="👩‍💼  Phòng",command=open_phong_form, **style).pack(pady=5)
 tk.Button(menu_frame, text="📋  Dịch Vụ",command=open_dichvu_form, **style).pack(pady=5)
-tk.Button(menu_frame, text="📋  Thanh toán", **style).pack(pady=5)
-tk.Button(menu_frame, text="🗂️  Thống kê", **style).pack(pady=5)
+tk.Button(menu_frame, text="📋  Thanh toán", command=open_thanhtoan_form, **style).pack(pady=5)
+
+tk.Button(menu_frame, 
+          text="🗂️  Thống kê", 
+          command=open_thongke_form, 
+          **style).pack(pady=5)
+
+
+
 
 tk.Button(menu_frame, text="❓  Giới thiệu", command=gioithieu,
+          bg="#0059b3", fg="white", font=("Times New Roman", 13, "bold"),
+          width=22, height=2).pack(pady=10)
+tk.Button(menu_frame, text="❌  Thoát", command=thoat_chuongtrinh,
           bg="#EE2222", fg="white", font=("Times New Roman", 13, "bold"),
           width=22, height=2).pack(pady=10)
-
 
 
 # ======== TIÊU ĐỀ ========

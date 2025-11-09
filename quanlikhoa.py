@@ -20,7 +20,7 @@ class QuanLyKhoa(tk.Frame):
 
     # --- THOÁT FORM CON ---
     def thoat(self):
-        if messagebox.askyesno("Thoát", "Bạn có chắc muốn thoát không?"):
+        
             self.master.destroy()
             self.root.deiconify()
 

@@ -28,16 +28,12 @@ def center_window(win, w=1150, h=670):
 
 # --- QUẢN LÝ BỆNH NHÂN ---
 def create_quanlybenhnhan(window):
-    import tkinter as tk
-    from tkinter import ttk, messagebox
-    from tkcalendar import DateEntry
-    import mysql.connector
-    import datetime
+    
 
     main_root = tk._default_root  # lấy root chính
     window.title("Quản lý bệnh nhân")
     window.geometry("1150x670")
-    window.resizable(False, False)
+    window.resizable(True, True)
 
     def on_close():
         main_root.deiconify()
@@ -54,6 +50,10 @@ def create_quanlybenhnhan(window):
     FONT_LABEL = ("Times New Roman", 13, "bold")
 
     window.configure(bg=BG_LIGHT)
+    # ==== Container chính ====
+    container = tk.Frame(window, bg="#fff5f5")
+    container.place(relx=0.5, rely=0.5, anchor="center")  # căn giữa toàn bộ nội dung
+
 
     # ===== Tiêu đề =====
     tk.Label(window, text="THÔNG TIN BỆNH NHÂN", 
@@ -311,5 +311,7 @@ def create_quanlybenhnhan(window):
         tree.heading(col, text=head)
         tree.column(col, width=w, anchor="center")
 
-    tree.pack(pady=5, padx=10, fill="both")
+    
+    tree.pack(pady=5, padx=10, fill="both", expand=True)
+
     load_data()

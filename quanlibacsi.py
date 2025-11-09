@@ -228,7 +228,7 @@ class QuanLyBacSi(tk.Frame):
 
     # --- THOÁT ---
     def quit_window(self):
-        if messagebox.askyesno("Thoát", "Bạn có chắc muốn thoát không?"):
+        
             self.master.destroy()
             self.main_root.deiconify()
 
