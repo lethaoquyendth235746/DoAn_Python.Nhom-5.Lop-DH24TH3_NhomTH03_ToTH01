@@ -48,7 +48,8 @@ def create_quanlybenhnhan(window):
     BG_BUTTON_FRAME = "#f9dcdc"    # frame nút
     BG_BUTTON = "#fd6f6f"          # nút màu đỏ
     FONT_LABEL = ("Times New Roman", 13, "bold")
-
+    BTN_COLOR3 = "#faad14"    # vàng đậm cho nút           
+    BTN_COLOR1 = "#2e7d32"
     window.configure(bg=BG_LIGHT)
     # ==== Container chính ====
     container = tk.Frame(window, bg="#fff5f5")
@@ -68,9 +69,9 @@ def create_quanlybenhnhan(window):
     entry_search = tk.Entry(frame_search, width=20)
     entry_search.grid(row=0, column=1, padx=5, pady=5)
 
-    tk.Button(frame_search, text="Tìm kiếm", font=FONT_LABEL, bg=BG_BUTTON, fg="white",
+    tk.Button(frame_search, text="Tìm kiếm", font=FONT_LABEL, bg=BTN_COLOR3, fg="white",
               command=lambda: tim_kiem(entry_search, tree)).grid(row=0, column=2, padx=5, pady=5)
-    tk.Button(frame_search, text="Hiện tất cả", font=FONT_LABEL, bg=BG_BUTTON, fg="white",
+    tk.Button(frame_search, text="Hiện tất cả", font=FONT_LABEL, bg=BTN_COLOR1, fg="white",
               command=lambda: load_data()).grid(row=0, column=3, padx=5, pady=5)
 
     # ===== Frame nhập thông tin =====
@@ -290,28 +291,35 @@ def create_quanlybenhnhan(window):
     ]
     for idx, (txt, cmd) in enumerate(btns):
         tk.Button(frame_btn, text=txt, width=8, command=cmd, font=FONT_LABEL, 
-                  bg=BG_BUTTON, fg="white").grid(row=0, column=idx, padx=20)
+                  bg="#a80000", fg="white").grid(row=0, column=idx, padx=20)
 
     # ===== Treeview =====
-    lbl_ds = tk.Label(window, text="Danh sách bệnh nhân", fg=COLOR_MAIN, font=FONT_LABEL, bg=BG_LIGHT)
-    lbl_ds.pack(pady=5, anchor="w", padx=10)
+            
+        lbl_ds = tk.Label(window, text="Danh sách bệnh nhân", fg=COLOR_MAIN, font=FONT_LABEL, bg=BG_LIGHT)
+        lbl_ds.pack(pady=5, anchor="w", padx=10)
 
-    columns = ("mabn", "holot", "ten", "phai", "ngaysinh", "diachi", "sdt", "cccd", "ngaydangky")
-    headings = ["Mã BN","Họ và lót","Tên","Phái","Ngày sinh","Địa chỉ","SĐT","CCCD","Ngày đăng ký"]
-    widths = [60,120,70,50,100,250,100,120,100]
+        columns = ("mabn", "holot", "ten", "phai", "ngaysinh", "diachi", "sdt", "cccd", "ngaydangky")
+        headings = ["Mã BN","Họ và lót","Tên","Phái","Ngày sinh","Địa chỉ","SĐT","CCCD","Ngày đăng ký"]
+        widths = [60,120,70,50,100,250,100,120,100]
 
-    tree = ttk.Treeview(window, columns=columns, show="headings", height=10)
+        # Tạo frame chứa Treeview + scrollbar
+        tree_frame = tk.Frame(window)
+        tree_frame.pack(pady=5, padx=10, fill="both", expand=True)
 
-    style = ttk.Style()
-    style.configure("Treeview", font=("Times New Roman", 12))
-    style.configure("Treeview.Heading", font=("Times New Roman", 13, "bold"))
-    style.map("Treeview", background=[("selected", "#a80000")], foreground=[("selected", "white")])
+        tree = ttk.Treeview(tree_frame, columns=columns, show="headings", height=10)
 
-    for col, head, w in zip(columns, headings, widths):
-        tree.heading(col, text=head)
-        tree.column(col, width=w, anchor="center")
+        style = ttk.Style()
+        style.configure("Treeview", font=("Times New Roman", 12))
+        style.configure("Treeview.Heading", font=("Times New Roman", 13, "bold"))
+        style.map("Treeview", background=[("selected", "#a80000")], foreground=[("selected", "white")])
 
-    
-    tree.pack(pady=5, padx=10, fill="both", expand=True)
+        for col, head, w in zip(columns, headings, widths):
+            tree.heading(col, text=head)
+            tree.column(col, width=w, anchor="center")
 
-    load_data()
+        # Scrollbar dọc
+        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+
+        scrollbar.pack(side="right", fill="y")
+        tree.pack(side="left", fill="both", expand=True)

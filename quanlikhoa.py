@@ -187,39 +187,84 @@ class QuanLyKhoa(tk.Frame):
         self.text_ghichu.grid(row=1, column=1, columnspan=3, padx=5, pady=5)
 
         # Frame tìm kiếm
+
         frame_search = tk.Frame(self, bg=BG_LIGHT)
         frame_search.pack(pady=10)
         tk.Label(frame_search, text="Tìm kiếm:", fg=COLOR_MAIN, font=FONT_LABEL, bg=BG_LIGHT).pack(side="left", padx=(0,5))
         self.entry_search = tk.Entry(frame_search, width=30)
         self.entry_search.pack(side="left", padx=5)
-        tk.Button(frame_search, text="Tìm", command=self.tim_kiem, fg="white", bg=BG_BUTTON, font=FONT_LABEL).pack(side="left", padx=5)
-        tk.Button(frame_search, text="Hiện tất cả", command=self.load_data, fg="white", bg=BG_BUTTON, font=FONT_LABEL).pack(side="left", padx=5)
 
-        # Frame nút
+        # Nút tìm kiếm màu vàng đậm
+        search_btn_conf = {
+            "fg": "white",
+            "bg": "#faad14",  # vàng đậm
+            "activebackground": "#d99800",
+            "activeforeground": "white",
+            "font": FONT_LABEL,
+            "width": 8
+        }
+        # Nút "Hiện tất cả" màu xanh
+        # Nút "Hiện tất cả" màu xanh lá đậm
+        show_all_btn_conf = {
+            "fg": "white",
+            "bg": "#2f8f2f",  # xanh lá đậm
+            "activebackground": "#1f5f1f",
+            "activeforeground": "white",
+            "font": FONT_LABEL,
+            "width": 10
+        }
+
+       
+
+        tk.Button(frame_search, text="Tìm Kiếm", command=self.tim_kiem, **search_btn_conf).pack(side="left", padx=5)
+        tk.Button(frame_search, text="Hiện tất cả", command=self.load_data, **show_all_btn_conf).pack(side="left", padx=5)
+
+
+        # Frame nút CRUD màu đỏ
         frame_btn = tk.Frame(self, bg=BG_LIGHT)
         frame_btn.pack(pady=10)
-        btn_conf = {"width": 8, "fg": "white", "bg": BG_BUTTON, "font": FONT_LABEL}
-        tk.Button(frame_btn, text="Thêm", command=self.them_khoa, **btn_conf).grid(row=0, column=0, padx=10)
-        tk.Button(frame_btn, text="Lưu", command=self.luu_khoa, **btn_conf).grid(row=0, column=1, padx=10)
-        tk.Button(frame_btn, text="Sửa", command=self.sua_khoa, **btn_conf).grid(row=0, column=2, padx=10)
-        tk.Button(frame_btn, text="Hủy", command=self.clear_input, **btn_conf).grid(row=0, column=3, padx=10)
-        tk.Button(frame_btn, text="Xóa", command=self.xoa_khoa, **btn_conf).grid(row=0, column=4, padx=10)
-        tk.Button(frame_btn, text="Thoát", command=self.thoat, **btn_conf).grid(row=0, column=5, padx=10)
+        crud_btn_conf = {
+            "width": 8,
+            "fg": "white",
+            "bg": "#a80000",  # đỏ đậm
+            "activebackground": "#a80000",
+            "activeforeground": "white",
+            "font": FONT_LABEL
+        }
 
-        # Treeview
-        tk.Label(self, text="Danh sách khoa", fg=COLOR_MAIN, font=FONT_LABEL, bg=BG_LIGHT).pack(pady=5, anchor="w", padx=15)
+        tk.Button(frame_btn, text="Thêm", command=self.them_khoa, **crud_btn_conf).grid(row=0, column=0, padx=10)
+        tk.Button(frame_btn, text="Lưu", command=self.luu_khoa, **crud_btn_conf).grid(row=0, column=1, padx=10)
+        tk.Button(frame_btn, text="Sửa", command=self.sua_khoa, **crud_btn_conf).grid(row=0, column=2, padx=10)
+        tk.Button(frame_btn, text="Hủy", command=self.clear_input, **crud_btn_conf).grid(row=0, column=3, padx=10)
+        tk.Button(frame_btn, text="Xóa", command=self.xoa_khoa, **crud_btn_conf).grid(row=0, column=4, padx=10)
+        tk.Button(frame_btn, text="Thoát", command=self.thoat, **crud_btn_conf).grid(row=0, column=5, padx=10)
+
+        
+        # Treeview với Scrollbar dọc
+        tree_frame = tk.Frame(self)
+        tree_frame.pack(padx=15, pady=5, fill="both", expand=True)
+
         columns = ("makhoa", "tenkhoa", "ghichu")
-        self.tree = ttk.Treeview(self, columns=columns, show="headings", height=12)
+        self.tree = ttk.Treeview(tree_frame, columns=columns, show="headings", height=12)
 
+        # Scrollbar dọc
+        scrollbar_y = ttk.Scrollbar(tree_frame, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=scrollbar_y.set)
+        scrollbar_y.pack(side="right", fill="y")
+
+        # Pack Treeview
+        self.tree.pack(side="left", fill="both", expand=True)
+
+        # Style Treeview
         style = ttk.Style()
         style.configure("Treeview", font=("Times New Roman", 12))
         style.configure("Treeview.Heading", font=("Times New Roman", 13, "bold"))
-        style.map("Treeview", background=[("selected", COLOR_MAIN)], foreground=[("selected", "white")])
+        style.map("Treeview", background=[("selected", "#a80000")], foreground=[("selected", "white")])
 
+        # Cấu hình cột
         for col, text, width in zip(columns, ["Mã khoa", "Tên khoa", "Ghi chú"], [100, 250, 400]):
             self.tree.heading(col, text=text)
             self.tree.column(col, width=width, anchor="center" if col != "ghichu" else "w")
 
         self.tree.tag_configure('evenrow', background="#fff0f0")
         self.tree.tag_configure('oddrow', background="#ffffff")
-        self.tree.pack(padx=15, pady=5, fill="both", expand=True)

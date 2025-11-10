@@ -69,7 +69,7 @@ class ThongKeHoaDon:
         style_tree = ttk.Style()
         style_tree.configure("Custom.Treeview",
                              font=("Times New Roman", 12),
-                             rowheight=25,
+                             rowheight=20,
                              background="white",
                              fieldbackground="white",
                              bordercolor="#100f0f",
@@ -84,7 +84,7 @@ class ThongKeHoaDon:
                foreground=[("selected", "White")])   # màu chữ khi chọn
         # Tạo Treeview với style
         tree = ttk.Treeview(frame_table, columns=("Tên dịch vụ", "Số lượng", "Tiền"),
-                            show="headings", height=10, style="Custom.Treeview")
+                            show="headings", height=6, style="Custom.Treeview")
 
         # Cài heading và cột
         tree.heading("Tên dịch vụ", text="Tên dịch vụ")
@@ -124,13 +124,25 @@ class ThongKeHoaDon:
                 tree.item(item, tags=("oddrow",))
         style_tree.configure("evenrow", background="#fff5f5")
         style_tree.configure("oddrow", background="#f9e6e6")
+                # === Khung chứa nút Thoát ===
+        frame_btn = tk.Frame(self.window, bg="#fff5f5")
+        frame_btn.pack(fill="x", pady=10)
+
+        # Nút Thoát trở về màn hình chính
+        btn_exit = tk.Button(frame_btn, text="⬅️ Thoát / Quay lại màn hình chính",
+                             font=("Times New Roman", 13, "bold"),
+                             bg="#a80000", fg="white", width=30, height=1)
+        btn_exit.pack(pady=10)
 
         # Xử lý khi đóng cửa sổ
         def on_close():
             self.window.destroy()
             self.parent.deiconify()  # hiện lại form chính
+
         self.window.protocol("WM_DELETE_WINDOW", on_close)
 
+        # Gán lại sự kiện cho nút Thoát
+        btn_exit.config(command=on_close)
 
 # Hàm gọi từ form chính
 def open_thongke_window(main_root, connect_db_func):

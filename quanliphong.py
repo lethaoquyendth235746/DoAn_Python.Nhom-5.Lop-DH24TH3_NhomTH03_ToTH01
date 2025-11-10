@@ -189,16 +189,18 @@ class QuanLyPhong(tk.Frame):
 
     # --- GIAO DIỆN ---
     def create_widgets(self):
-        COLOR_MAIN = "#a80000"  # Đỏ chủ đạo
+        
+        COLOR_MAIN = "#a80000"  # đỏ chủ đạo
         FONT_LABEL = ("Times New Roman", 13, "bold")
+        BG_LIGHT = "#fff5f5"
 
         # === TIÊU ĐỀ ===
         tk.Label(self, text="QUẢN LÝ PHÒNG", font=("Times New Roman", 22, "bold"),
-                 fg=COLOR_MAIN, bg="#fff5f5").pack(pady=10)
+                fg=COLOR_MAIN, bg=BG_LIGHT).pack(pady=10)
 
         # === THÔNG TIN PHÒNG ===
         frame_info = tk.LabelFrame(self, text="Thông tin phòng", font=FONT_LABEL, bg="#fcdada",
-                                   fg=COLOR_MAIN, padx=10, pady=10, bd=2, relief="groove")
+                                fg=COLOR_MAIN, padx=10, pady=10, bd=2, relief="groove")
         frame_info.pack(pady=10, padx=15, fill="x")
 
         tk.Label(frame_info, text="Mã phòng:", font=FONT_LABEL, bg="#ffeaea").grid(row=0, column=0, padx=8, pady=6, sticky="e")
@@ -211,7 +213,7 @@ class QuanLyPhong(tk.Frame):
 
         tk.Label(frame_info, text="Loại phòng:", font=FONT_LABEL, bg="#ffeaea").grid(row=1, column=0, padx=8, pady=6, sticky="e")
         self.cb_loaiphong = ttk.Combobox(frame_info, font=("Times New Roman", 12), state="readonly",
-                                         values=["Phòng thường", "Phòng VIP", "Phòng cấp cứu"])
+                                        values=["Phòng thường", "Phòng VIP", "Phòng cấp cứu"])
         self.cb_loaiphong.grid(row=1, column=1, padx=8, pady=6)
 
         tk.Label(frame_info, text="Số giường:", font=FONT_LABEL, bg="#ffeaea").grid(row=1, column=2, padx=8, pady=6, sticky="e")
@@ -224,47 +226,78 @@ class QuanLyPhong(tk.Frame):
 
         # === CHỨC NĂNG ===
         frame_btn = tk.LabelFrame(self, text="Chức năng", font=FONT_LABEL, bg="#f9dcdc",
-                                  fg=COLOR_MAIN, padx=10, pady=10, bd=2, relief="groove")
+                                fg=COLOR_MAIN, padx=10, pady=10, bd=2, relief="groove")
         frame_btn.pack(pady=5, padx=15, fill="x")
 
-        btn_conf = {"font": ("Times New Roman", 12, "bold"), "bg": "#fd6f6f", "fg": "white", "width": 10}
-        tk.Button(frame_btn, text="Thêm", command=self.them_phong, **btn_conf).grid(row=0, column=0, padx=25, pady=5)
-        tk.Button(frame_btn, text="Sửa", command=self.sua_phong, **btn_conf).grid(row=0, column=1, padx=25, pady=5)
-        tk.Button(frame_btn, text="Lưu", command=self.luu_phong, **btn_conf).grid(row=0, column=2, padx=25, pady=5)
-        tk.Button(frame_btn, text="Xóa", command=self.xoa_phong, **btn_conf).grid(row=0, column=3, padx=25, pady=5)
-        tk.Button(frame_btn, text="Hủy", command=self.clear_input, **btn_conf).grid(row=0, column=4, padx=25, pady=5)
-        #tk.Button(frame_btn, text="Thoát", command=self.master.destroy, **btn_conf).grid(row=0, column=5, padx=25, pady=5)
-        tk.Button(frame_btn, text="Thoát", command=self.close_form, **btn_conf).grid(row=0, column=5, padx=25, pady=5)
+        # Cấu hình nút đỏ đậm
+        btn_red_conf = {
+            "font": ("Times New Roman", 12, "bold"),
+            "bg": "#a80000",
+            "fg": "white",
+            "activebackground": "#7f0000",
+            "activeforeground": "white",
+            "width": 10
+        }
+
+        tk.Button(frame_btn, text="Thêm", command=self.them_phong, **btn_red_conf).grid(row=0, column=0, padx=25, pady=5)
+        tk.Button(frame_btn, text="Sửa", command=self.sua_phong, **btn_red_conf).grid(row=0, column=1, padx=25, pady=5)
+        tk.Button(frame_btn, text="Lưu", command=self.luu_phong, **btn_red_conf).grid(row=0, column=2, padx=25, pady=5)
+        tk.Button(frame_btn, text="Xóa", command=self.xoa_phong, **btn_red_conf).grid(row=0, column=3, padx=25, pady=5)
+        tk.Button(frame_btn, text="Hủy", command=self.clear_input, **btn_red_conf).grid(row=0, column=4, padx=25, pady=5)
+        tk.Button(frame_btn, text="Thoát", command=self.close_form, **btn_red_conf).grid(row=0, column=5, padx=25, pady=5)
 
         # === TÌM KIẾM ===
-        search_frame = tk.Frame(self, bg="#fff5f5")
+        search_frame = tk.Frame(self, bg=BG_LIGHT)
         search_frame.pack(fill="x", padx=15, pady=(5, 0))
-        tk.Label(search_frame, text="Tìm kiếm:", font=FONT_LABEL, bg="#fff5f5").pack(side="left", padx=5)
+        tk.Label(search_frame, text="Tìm kiếm:", font=FONT_LABEL, bg=BG_LIGHT).pack(side="left", padx=5)
         self.entry_search = tk.Entry(search_frame, font=("Times New Roman", 12), width=30)
         self.entry_search.pack(side="left", padx=5)
-        tk.Button(search_frame, text="Tìm", command=self.tim_kiem, **btn_conf).pack(side="left", padx=5)
+
+        # Nút tìm kiếm màu vàng đậm
+        btn_search_conf = {
+            "font": ("Times New Roman", 12, "bold"),
+            "bg": "#faad14",
+            "fg": "white",
+            "activebackground": "#d99800",
+            "activeforeground": "white",
+            "width": 8
+        }
+        tk.Button(search_frame, text="Tìm Kiếm", command=self.tim_kiem, **btn_search_conf).pack(side="left", padx=5)
 
         # === BẢNG DANH SÁCH ===
+        # === BẢNG DANH SÁCH ===
+        tree_frame = tk.Frame(self)
+        tree_frame.pack(fill="both", expand=True, padx=15, pady=10)
+
+        columns = ("maphong", "tenphong", "loaiphong", "sogiuong", "makhoa")
+        self.tree = ttk.Treeview(tree_frame, columns=columns, show="headings", height=10)
+
+        # Scrollbar dọc
+        scrollbar_y = ttk.Scrollbar(tree_frame, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=scrollbar_y.set)
+        scrollbar_y.pack(side="right", fill="y")
+
+        # Scrollbar ngang 
+        scrollbar_x = ttk.Scrollbar(tree_frame, orient="horizontal", command=self.tree.xview)
+        self.tree.configure(xscrollcommand=scrollbar_x.set)
+        scrollbar_x.pack(side="bottom", fill="x")
+
+        # Cấu hình cột và tiêu đề
+        for col, text in zip(columns, ["Mã phòng", "Tên phòng", "Loại phòng", "Số giường", "Mã khoa"]):
+            self.tree.heading(col, text=text)
+            self.tree.column(col, anchor="center", width=150)
+
+        # Style Treeview
         style = ttk.Style()
         style.configure("Treeview.Heading", font=("Times New Roman", 13, "bold"))
         style.configure("Treeview", font=("Times New Roman", 12))
         style.map("Treeview", background=[("selected", "#a80000")], foreground=[("selected", "white")])
 
-        columns = ("maphong", "tenphong", "loaiphong", "sogiuong", "makhoa")
-        self.tree = ttk.Treeview(self, columns=columns, show="headings", height=10)
-
-        self.tree.heading("maphong", text="Mã phòng")
-        self.tree.heading("tenphong", text="Tên phòng")
-        self.tree.heading("loaiphong", text="Loại phòng")
-        self.tree.heading("sogiuong", text="Số giường")
-        self.tree.heading("makhoa", text="Mã khoa")
-
-        for col in columns:
-            self.tree.column(col, anchor="center", width=150)
-
-        self.tree.pack(fill="both", expand=True, padx=15, pady=10)
         self.tree.tag_configure('evenrow', background="#fff0f0")
         self.tree.tag_configure('oddrow', background="#ffffff")
+
+        # Pack Treeview
+        self.tree.pack(side="left", fill="both", expand=True)
 
 
 # --- CHẠY THỬ ---

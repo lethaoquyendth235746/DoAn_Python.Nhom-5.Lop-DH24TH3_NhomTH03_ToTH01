@@ -41,7 +41,14 @@ class QuanLyNhapVien(tk.Frame):
         self.FONT_LABEL = ("Times New Roman", 13, "bold")
         self.FONT_BTN = ("Times New Roman", 12, "bold")
         self.configure(bg=self.BG_LIGHT)
+      
 
+        self.BTN_COLOR_MAIN = "#a80000"
+        self.BTN_HOVER_MAIN = "#d32f2f"
+        self.BTN_COLOR_SEARCH = "#faad14"
+        self.BTN_HOVER_SEARCH = "#ffc53d"
+
+        
         self.create_widgets()
         self.load_data()
 
@@ -243,18 +250,27 @@ class QuanLyNhapVien(tk.Frame):
     # --- GIAO DIỆN ---
     def create_widgets(self):
         # TIÊU ĐỀ
+        
         tk.Label(self, text="QUẢN LÝ NHẬP VIỆN", font=("Times New Roman", 22, "bold"),
                  fg=self.COLOR_MAIN, bg=self.BG_LIGHT).pack(pady=10)
 
         # TÌM KIẾM
+         # --- TÌM KIẾM ---
         search_frame = tk.Frame(self, bg=self.BG_LIGHT)
         search_frame.pack(fill="x", padx=15, pady=5)
+
         tk.Label(search_frame, text="Tìm kiếm theo Mã BN:", font=self.FONT_LABEL, bg=self.BG_LIGHT).pack(side="left")
         self.entry_search = tk.Entry(search_frame, font=("Times New Roman",12), width=30)
         self.entry_search.pack(side="left", padx=5)
-        btn_conf = {"font": self.FONT_BTN, "bg": self.BG_BUTTON, "fg":"white", "width":10}
-        tk.Button(search_frame, text="Tìm", command=self.tim_kiem, **btn_conf).pack(side="left", padx=5)
+        btn_search = tk.Button(search_frame, text="Tìm Kiếm", command=self.tim_kiem,
+                               font=self.FONT_BTN, bg=self.BTN_COLOR_SEARCH, fg="white",
+                               width=10, relief="ridge", cursor="hand2")
+        btn_search.pack(side="left", padx=5)
 
+        # Hiệu ứng hover vàng
+        btn_search.bind("<Enter>", lambda e: btn_search.config(bg=self.BTN_HOVER_SEARCH))
+        btn_search.bind("<Leave>", lambda e: btn_search.config(bg=self.BTN_COLOR_SEARCH))
+        
         # THÔNG TIN NHẬP VIỆN
         frame_info = tk.LabelFrame(self, text="Thông tin nhập viện", font=self.FONT_LABEL,
                                    bg=self.BG_INFO_FRAME, fg=self.COLOR_MAIN, padx=10, pady=10)
@@ -295,16 +311,40 @@ class QuanLyNhapVien(tk.Frame):
         self.entry_ghichu.grid(row=4, column=1, columnspan=3, padx=8, pady=6, sticky="w")
 
         # NÚT CHỨC NĂNG
+        # --- KHUNG NÚT CHỨC NĂNG ---
         frame_btn = tk.Frame(self, bg=self.BG_BUTTON_FRAME)
         frame_btn.pack(pady=5)
-        tk.Button(frame_btn, text="Thêm", command=self.them_nhapvien, **btn_conf).grid(row=0, column=0, padx=5)
-        tk.Button(frame_btn, text="Sửa", command=self.sua_nhapvien, **btn_conf).grid(row=0, column=1, padx=5)
-        tk.Button(frame_btn, text="Lưu", command=self.luu_nhapvien, **btn_conf).grid(row=0, column=2, padx=5)
-        tk.Button(frame_btn, text="Xóa", command=self.xoa_nhapvien, **btn_conf).grid(row=0, column=3, padx=5)
-        tk.Button(frame_btn, text="Hủy", command=self.clear_input, **btn_conf).grid(row=0, column=4, padx=5)
-        tk.Button(frame_btn, text="Thoát", command=self.close_form, **btn_conf).grid(row=0, column=5, padx=5)
 
-        # ===== TREEVIEW GIỐNG FILE QUẢN LÝ BỆNH NHÂN =====
+        btn_conf = {
+            "font": self.FONT_BTN,
+            "bg":self.BTN_COLOR_MAIN,
+            "fg": "white",
+            "width": 10,
+            "relief": "ridge",
+            "cursor": "hand2"
+        }
+
+        btn_names = ["Thêm", "Sửa", "Lưu", "Xóa", "Hủy", "Thoát"]
+        btn_cmds = [
+            self.them_nhapvien,
+            self.sua_nhapvien,
+            self.luu_nhapvien,
+            self.xoa_nhapvien,
+            self.clear_input,
+            self.close_form
+        ]
+
+        for i, (name, cmd) in enumerate(zip(btn_names, btn_cmds)):
+            btn = tk.Button(frame_btn, text=name, command=cmd, **btn_conf)
+            btn.grid(row=0, column=i, padx=6, pady=5)
+
+            # Hiệu ứng hover đỏ
+            btn.bind("<Enter>", lambda e, b=btn: b.config(bg=self.BTN_HOVER_MAIN))
+            btn.bind("<Leave>", lambda e, b=btn: b.config(bg=self.BTN_COLOR_MAIN))
+        
+
+        # ===== TREEVIEW =====
+       
         lbl_ds = tk.Label(self, text="Danh sách nhập viện", fg=self.COLOR_MAIN, font=self.FONT_LABEL, bg=self.BG_LIGHT)
         lbl_ds.pack(pady=5, anchor="w", padx=15)
 
@@ -312,7 +352,11 @@ class QuanLyNhapVien(tk.Frame):
         headings = ["STT","Mã BN","Ngày nhập","Ngày xuất","Loại hình","Chẩn đoán","Ghi chú","Mã BS","Mã phòng"]
         widths = [50,80,100,100,100,150,150,80,80]
 
-        self.tree = ttk.Treeview(self, columns=columns, show="headings", height=10)
+        # Tạo frame chứa Treeview và Scrollbar
+        tree_frame = tk.Frame(self)
+        tree_frame.pack(fill="both", expand=True, padx=15, pady=10)
+
+        self.tree = ttk.Treeview(tree_frame, columns=columns, show="headings", height=10)
 
         style = ttk.Style()
         style.configure("Treeview", font=("Times New Roman", 12))
@@ -323,7 +367,12 @@ class QuanLyNhapVien(tk.Frame):
             self.tree.heading(col, text=head)
             self.tree.column(col, width=w, anchor="center")
 
-        self.tree.pack(fill="both", expand=True, padx=15, pady=10)
+        # Scrollbar dọc
+        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=scrollbar.set)
+
+        scrollbar.pack(side="right", fill="y")
+        self.tree.pack(side="left", fill="both", expand=True)
 
 # --- CHẠY CHƯƠNG TRÌNH ---
 '''

@@ -4,9 +4,10 @@ from PIL import Image, ImageTk  # cần cài: pip install pillow
 #from quanlibenhnhan import 
 import mysql.connector # Cần thêm dòng này
 from quanlibenhnhan import create_quanlybenhnhan, connect_db, center_window # Import hàm cần thiết
-from quanlibenhnhan import create_quanlybenhnhan, connect_db, center_window # Import hàm cần thiết
+
 from giaodiendangnhap import show_login_window # Import hàm hiển thị login
 #show_login_window(root, connect_db, center_window, "#e60073")
+
 
 from quanlibacsi import QuanLyBacSi
 from quanlikhoa import QuanLyKhoa
@@ -24,13 +25,7 @@ def dangnhap_click():
     # COLOR_DARK_RED_FG phải được định nghĩa ở phạm vi global hoặc truyền vào (Xem Bước 2)
     show_login_window(root, connect_db, center_window, "#E21C1C")
 
-def dangxuat_click():
-    """Xử lý Đăng xuất: Ẩn cửa sổ chính và mở lại cửa sổ login."""
-    if messagebox.askyesno("Xác nhận", "Bạn có chắc muốn đăng xuất không?"):
-        # Ẩn cửa sổ chính
-        root.withdraw() 
-        # Hiển thị lại cửa sổ đăng nhập
-        show_login_window(root, connect_db, center_window, "#E21C1C")
+
 from tkinter import Toplevel
 from quanlibenhnhan import create_quanlybenhnhan  # đổi tên hàm nếu em đang dùng khác
 
@@ -230,5 +225,7 @@ author.place(x=850, y=600)
 
 root.withdraw()
 root.protocol("WM_DELETE_WINDOW", root.quit)
-show_login_window(root, connect_db, center_window, COLOR_DARK_RED_FG)
+#show_login_window(root, connect_db, center_window, COLOR_DARK_RED_FG)
+show_login_window(root, center_window, COLOR_DARK_RED_FG)
+
 root.mainloop()
