@@ -297,15 +297,15 @@ class QuanLyThanhToan(tk.Frame):
             messagebox.showerror("Lỗi", str(err))
         finally:
             conn.close()
-<<<<<<< HEAD
+
     def close_form(self):
         self.master.destroy()
         if self.parent_root:
             self.parent_root.deiconify()
     
-=======
 
->>>>>>> 6429ecb03fe9745da73cc005778422d17d0ac7f6
+
+
     # --- GIAO DIỆN ---
     def create_widgets(self):
         COLOR_MAIN = "#a80000"
@@ -315,16 +315,14 @@ class QuanLyThanhToan(tk.Frame):
         BG_BUTTON = "#fd6f6f"
         FONT_LABEL = ("Times New Roman", 13, "bold")
         FONT_TITLE = ("Times New Roman", 22, "bold")
-<<<<<<< HEAD
+
        
 
         tk.Label(self, text="QUẢN LÝ THANH TOÁN", font=FONT_TITLE, fg=COLOR_MAIN, bg=BG_LIGHT).pack(pady=10)
         self.configure(bg=BG_LIGHT)
-=======
-        
-        tk.Label(self, text="QUẢN LÝ THANH TOÁN", font=FONT_TITLE, fg=COLOR_MAIN, bg=BG_LIGHT).pack(pady=10)
 
->>>>>>> 6429ecb03fe9745da73cc005778422d17d0ac7f6
+        
+        
         # -----------------------------
         # 1. THÔNG TIN HÓA ĐƠN (HEADER)
         # -----------------------------
@@ -419,14 +417,12 @@ class QuanLyThanhToan(tk.Frame):
         tk.Button(frame_btn, text="Sửa HĐ", command=self.update_invoice, **btn_conf).grid(row=0, column=2, padx=15)
         tk.Button(frame_btn, text="Thanh toán", command=self.mark_paid, **btn_conf).grid(row=0, column=3, padx=15)
         tk.Button(frame_btn, text="Xóa HĐ", command=self.delete_invoice, **btn_conf).grid(row=0, column=4, padx=15)
-<<<<<<< HEAD
+
        # tk.Button(frame_btn, text="Thoát", command=self.master.destroy, **btn_conf).grid(row=0, column=5, padx=15)
         tk.Button(frame_btn, text="Thoát", command=self.close_form, **btn_conf).grid(row=0, column=5, padx=15)
 
         
-=======
-        tk.Button(frame_btn, text="Thoát", command=self.master.destroy, **btn_conf).grid(row=0, column=5, padx=15)
->>>>>>> 6429ecb03fe9745da73cc005778422d17d0ac7f6
+
 
 
 # --- TEST CHẠY ---
