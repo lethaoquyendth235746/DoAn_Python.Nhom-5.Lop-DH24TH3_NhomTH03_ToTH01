@@ -281,6 +281,7 @@ def create_quanlybenhnhan(window):
             conn.close()
 
     # ===== Buttons CRUD =====
+        # ===== Buttons CRUD =====
     btns = [
         ("Thêm", them_nv),
         ("Lưu", luu_nv),
@@ -294,32 +295,29 @@ def create_quanlybenhnhan(window):
                   bg="#a80000", fg="white").grid(row=0, column=idx, padx=20)
 
     # ===== Treeview =====
-            
-        lbl_ds = tk.Label(window, text="Danh sách bệnh nhân", fg=COLOR_MAIN, font=FONT_LABEL, bg=BG_LIGHT)
-        lbl_ds.pack(pady=5, anchor="w", padx=10)
+    lbl_ds = tk.Label(window, text="Danh sách bệnh nhân", fg=COLOR_MAIN, font=FONT_LABEL, bg=BG_LIGHT)
+    lbl_ds.pack(pady=5, anchor="w", padx=10)
 
-        columns = ("mabn", "holot", "ten", "phai", "ngaysinh", "diachi", "sdt", "cccd", "ngaydangky")
-        headings = ["Mã BN","Họ và lót","Tên","Phái","Ngày sinh","Địa chỉ","SĐT","CCCD","Ngày đăng ký"]
-        widths = [60,120,70,50,100,250,100,120,100]
+    columns = ("mabn", "holot", "ten", "phai", "ngaysinh", "diachi", "sdt", "cccd", "ngaydangky")
+    headings = ["Mã BN","Họ và lót","Tên","Phái","Ngày sinh","Địa chỉ","SĐT","CCCD","Ngày đăng ký"]
+    widths = [60,120,70,50,100,250,100,120,100]
 
-        # Tạo frame chứa Treeview + scrollbar
-        tree_frame = tk.Frame(window)
-        tree_frame.pack(pady=5, padx=10, fill="both", expand=True)
+    tree_frame = tk.Frame(window)
+    tree_frame.pack(pady=5, padx=10, fill="both", expand=True)
 
-        tree = ttk.Treeview(tree_frame, columns=columns, show="headings", height=10)
+    tree = ttk.Treeview(tree_frame, columns=columns, show="headings", height=10)
 
-        style = ttk.Style()
-        style.configure("Treeview", font=("Times New Roman", 12))
-        style.configure("Treeview.Heading", font=("Times New Roman", 13, "bold"))
-        style.map("Treeview", background=[("selected", "#a80000")], foreground=[("selected", "white")])
+    style = ttk.Style()
+    style.configure("Treeview", font=("Times New Roman", 12))
+    style.configure("Treeview.Heading", font=("Times New Roman", 13, "bold"))
+    style.map("Treeview", background=[("selected", "#a80000")], foreground=[("selected", "white")])
 
-        for col, head, w in zip(columns, headings, widths):
-            tree.heading(col, text=head)
-            tree.column(col, width=w, anchor="center")
+    for col, head, w in zip(columns, headings, widths):
+        tree.heading(col, text=head)
+        tree.column(col, width=w, anchor="center")
 
-        # Scrollbar dọc
-        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
-        tree.configure(yscrollcommand=scrollbar.set)
+    scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
+    tree.configure(yscrollcommand=scrollbar.set)
 
-        scrollbar.pack(side="right", fill="y")
-        tree.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+    tree.pack(side="left", fill="both", expand=True)
